@@ -1,0 +1,2 @@
+# LotteryNumber
+Get LotteryNumber
