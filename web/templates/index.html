@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Lottery Predict</title>
+  <link rel="Shortcut Icon" type="image/x-icon" href="images/lottery.ico" />
+  <!--Import Google Icon Font-->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <!-- Compiled and minified CSS -->
+  <link rel="stylesheet" href="css/materialize.min.css">
+
+  <!--Import jQuery before materialize.js-->
+  <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+  <script src="js/materialize.min.js"></script>
+
+  <!--Let browser know website is optimized for mobile-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+</head>
+<script>
+  $(document).ready(function() {
+    var $input = $('.datepicker').pickadate({
+      selectMonths: true, // Creates a dropdown to control month
+      selectYears: 5,
+      close: 'Close',
+      closeOnSelect: true,
+      closeOnClear: true,
+      onSet: function(context) {
+        getDate();
+      },
+      onClose: function() {
+        $(document.activeElement).blur();
+      }
+    });
+
+    function getDate() {
+      var picker = $input.pickadate('picker');
+      date = picker.get('select');
+      if (date == null)
+        return;
+      $('#loading').show();
+      picker.close();
+      var year = date.year;
+      var month = date.month;
+      var day = date.date;
+      postdata = {"year": year, "month": month, "day": day};
+      $.ajax({
+          url: "http://"+self.location.host+"/api/getnumber",
+          type: "POST",
+          data: JSON.stringify(postdata),
+          contentType: "application/json",
+          success: function(data) {
+            alert("Lottery Number is : " + data);
+            $('#loading').hide();
+          }
+        });
+    }
+  });
+</script>
+
+<body bgcolor="#fcfcfc">
+  <div class="container" style="margin-top:4%">
+    <div class="row">
+      <div class="col l2 s1 m1">
+      </div>
+      <div class="col s10 m10 l8">
+        <div class="card">
+          <div class="card-image">
+            <img src="images/DreamBig.jpg">
+          </div>
+          <div class="card-content">
+            <p>The future belongs to those who believe in the beauty of their dreams.</p>
+          </div>
+          <div class="card-action">
+            <label for="birthdate" class="">Pick a Date !</label>
+            <input id="birthdate" type="text" class="datepicker picker__input" readonly="" tabindex="-1" aria-haspopup="true" aria-expanded="false" aria-readonly="false" aria-owns="birthdate_root">
+            <div class="progress" id="loading" style="display:none">
+                <div class="indeterminate"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col l2 s1 m1">
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>
