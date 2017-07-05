@@ -10,6 +10,7 @@ from sklearn import datasets, svm, metrics
 import numpy as np
 from sklearn.svm import SVC
 from lunisolar import ChineseDate
+import random
 
 classifier = SVC(kernel="linear", C=0.04)
 app = Flask(__name__,
@@ -71,7 +72,7 @@ def lottry_predict():
     # Encryption the plaintext
     json_dict = request.get_json()
     year = int(json_dict['year'])
-    month = int(json_dict['month'])
+    month = int(json_dict['month']) + 1
     day = int(json_dict['day'])
     moon_landing = ChineseDate.from_gregorian(year, month, day)
     number = [0] * 49
@@ -79,6 +80,8 @@ def lottry_predict():
     for i in range(7):
         user_input = [moon_landing.month, moon_landing.day] + number
         predicted = int(classifier.predict(user_input))
+        while predicted in user_output:
+            predicted = random.randint(1, 49)
         user_output.append(predicted)
         number[predicted - 1] = 1
 
@@ -88,4 +91,4 @@ def lottry_predict():
 
 if __name__ == "__main__":
     training_data()
-    app.run(host='0.0.0.0', threaded=True)
+    app.run(host='0.0.0.0', threaded=True, port=8000)
