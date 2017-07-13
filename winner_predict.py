@@ -5,6 +5,7 @@ from sklearn.svm import SVC
 from lunisolar import ChineseDate
 import random
 
+
 def training_data():
     print "Start training...."
     classifier = SVC(kernel="linear", C=0.04)

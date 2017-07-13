@@ -6,14 +6,11 @@ from flask_cors import CORS
 from webob import Response
 import os
 import json
-from sklearn import datasets, svm, metrics
-import numpy as np
-from sklearn.svm import SVC
 from lunisolar import ChineseDate
 import random
 import winner_predict
 
-classifier = SVC(kernel="linear", C=0.04)
+classifier = None
 app = Flask(__name__,
             static_url_path='',
             static_folder='web/static',
