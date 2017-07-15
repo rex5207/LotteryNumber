@@ -21,49 +21,7 @@ CORS(app)
 @app.route('/', methods=['GET'])
 def indexInfo():
     return render_template('index.html')
-
-
-def training_data():
-    print "Start training...."
-    lottery_input = []
-    lottery_output = []
-    f = open("lottery_numbers_Chinese", 'r')
-    for line in f.readlines():
-        number = [0] * 49
-        numberInfo = map(int, line.split())
-        month = numberInfo[0]
-        day = numberInfo[1]
-
-        '''
-        input:[12, 14, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-        output: 33
-        '''
-        lottery_input.append([month, day] + number)
-        lottery_output.append(numberInfo[2])
-
-        for i in range(2, 8, 1):
-            number[numberInfo[i] - 1] = 1
-            lottery_input.append([month, day] + number)
-            lottery_output.append(numberInfo[i + 1])
-    f.close
-
-    n_samples = len(lottery_input)
-
-    data = np.hstack(lottery_input)
-    data = data.reshape((n_samples, -1))
-    lottery_output = np.array(lottery_output)
-
-    classifier.fit(data, lottery_output)
-    print "Finish training...."
-    # expected = lottery_output[n_samples / 2:]
-    # predicted = classifier.predict(data[n_samples / 2:])
-    #
-    # error = []
-    # for i in range(len(expected)):
-    #     if(expected[i] != predicted[i]):
-    #         error.append(i)
-    # print "correct probability is ", (len(expected) - len(error)) / float(len(expected))
-
+    
 
 @app.route('/api/getnumber', methods=['POST'])
 def lottry_predict():
