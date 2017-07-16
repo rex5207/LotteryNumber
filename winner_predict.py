@@ -40,5 +40,4 @@ def training_data():
 
     classifier.fit(data, lottery_output)
     print "Finish training...."
-
     return classifier
