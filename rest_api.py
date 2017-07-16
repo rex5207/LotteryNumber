@@ -2,7 +2,6 @@
 # !flask/bin/python
 from flask import Flask, request, jsonify
 from flask import render_template
-from flask_cors import CORS
 from webob import Response
 import os
 import json
@@ -10,18 +9,19 @@ from lunisolar import ChineseDate
 import random
 import winner_predict
 
-classifier = None
+
+classifier = winner_predict.training_data()
+
 app = Flask(__name__,
             static_url_path='',
             static_folder='web/static',
             template_folder='web/templates')
-CORS(app)
 
 
 @app.route('/', methods=['GET'])
 def indexInfo():
     return render_template('index.html')
-    
+
 
 @app.route('/api/getnumber', methods=['POST'])
 def lottry_predict():
@@ -47,5 +47,4 @@ def lottry_predict():
 
 
 if __name__ == "__main__":
-    classifier = winner_predict.training_data()
-    app.run(host='0.0.0.0', threaded=True, port=8000)
+    app.run()
